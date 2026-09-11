@@ -199,7 +199,7 @@ function renderTextExercise(exercise, variantIndex) {
   const root = byId('exercise');
   root.innerHTML = `
     <section class="card">
-      <h2>1) Текст и вопросы · ${escapeHtml(exercise.level)} · zestaw ${variantIndex + 1}/${getTaskCount(exercise.level)}</h2>
+      <h2>1) Текст и вопросы · ${escapeHtml(exercise.level)}</h2>
       <p class="hint">Przeczytaj tekst po rosyjsku, a potem odpowiedz na 5 pytań. Ten poziom ma ${exercise.sentenceCount} zdań.</p>
       <article class="russian-text" lang="ru">
         <h3>${escapeHtml(exercise.title)}</h3>
@@ -247,7 +247,7 @@ function renderRepeatExercise(exercise, variantIndex) {
   const summary = buildRepeatSummary(exercise);
   root.innerHTML = `
     <section class="card">
-      <h2>2) Повтори слова · ${escapeHtml(exercise.level)} · zestaw ${variantIndex + 1}/${getTaskCount(exercise.level)}</h2>
+      <h2>2) Повтори слова · ${escapeHtml(exercise.level)}</h2>
       <p class="hint">Najpierw kliknij zdanie z luką, potem kliknij słowo u góry. Użyte słowo robi się zielone. Kliknij wstawione słowo drugi raz, żeby je usunąć.</p>
       <div class="word-bank">${exercise.wordBank.map((word) => `<button type="button" class="word-button" data-word="${escapeHtml(word.lemma)}">${escapeHtml(word.lemma)}</button>`).join('')}</div>
       <ol class="gap-list">${exercise.sentences.map((sentence) => `<li><button type="button" class="gap-sentence" data-sentence="${sentence.id}"><span class="sentence-text">${escapeHtml(sentence.textWithGap)}</span><span class="inserted" id="inserted-${sentence.id}" data-sentence="${sentence.id}"></span></button></li>`).join('')}</ol>
@@ -323,27 +323,21 @@ function renderRepeatExercise(exercise, variantIndex) {
 async function initApp() {
   const words = await loadWords();
   let level = 'A2';
-  let variantIndex = 0;
+  const variantIndex = 0;
   let mode = 'text';
   let tasks = generateTaskSet(words, variantIndex, level);
-  const renderCurrent = () => {
-    byId('task-counter').textContent = `Zestaw ${variantIndex + 1}/${getTaskCount(level)}`;
-    return mode === 'text' ? renderTextExercise(tasks.textExercise, variantIndex) : renderRepeatExercise(tasks.repeatExercise, variantIndex);
-  };
+  const renderCurrent = () => (mode === 'text'
+    ? renderTextExercise(tasks.textExercise, variantIndex)
+    : renderRepeatExercise(tasks.repeatExercise, variantIndex));
   document.querySelectorAll('[data-level]').forEach((button) => button.addEventListener('click', () => {
     level = button.dataset.level;
-    variantIndex = 0;
     tasks = generateTaskSet(words, variantIndex, level);
     document.querySelectorAll('[data-level]').forEach((node) => node.classList.toggle('active', node.dataset.level === level));
     renderCurrent();
   }));
   byId('text-mode').addEventListener('click', () => { mode = 'text'; renderCurrent(); });
   byId('repeat-mode').addEventListener('click', () => { mode = 'repeat'; renderCurrent(); });
-  byId('new-tasks').addEventListener('click', () => {
-    variantIndex = (variantIndex + 1) % getTaskCount(level);
-    tasks = generateTaskSet(words, variantIndex, level);
-    renderCurrent();
-  });
+
   document.querySelector('[data-level="A2"]').classList.add('active');
   renderCurrent();
 }
