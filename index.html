@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rosyjski hokej — nauka słów</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="layout">
+    <header class="hero">
+      <p class="eyebrow">Rosyjski A1–B2 · tematyka hokejowa</p>
+      <h1>Учимся говорить о хоккее</h1>
+      <p>Prosta aplikacja do nauki rosyjskiego na bazie słów z tekstów o hokeju na lodzie.</p>
+    </header>
+
+    <section class="level-picker" aria-label="Wybór poziomu">
+      <div>
+        <p class="eyebrow">Poziom</p>
+        <p><span id="task-counter">Zestaw 1/20</span></p>
+      </div>
+      <div class="level-buttons">
+        <button type="button" data-level="A1">A1</button>
+        <button type="button" data-level="A2">A2</button>
+        <button type="button" data-level="B1">B1</button>
+        <button type="button" data-level="B2">B2</button>
+      </div>
+    </section>
+
+    <nav class="mode-picker" aria-label="Wybór rodzaju zadania">
+      <button id="text-mode" type="button" class="mode-card">
+        <span>1</span>
+        <strong>Текст и вопросы</strong>
+        <small>Tekst + 5 pytań a/b/c/d</small>
+      </button>
+      <button id="repeat-mode" type="button" class="mode-card">
+        <span>2</span>
+        <strong>Повтори слова</strong>
+        <small>Wstawianie słów w luki</small>
+      </button>
+      <button id="new-tasks" type="button" class="mode-card generate-card">
+        <span>↻</span>
+        <strong>Generuj nowe zadania</strong>
+        <small>20 zestawów na każdy poziom</small>
+      </button>
+    </nav>
+
+    <div id="exercise"></div>
+  </main>
+
+  <script defer src="./tasks-data.browser.js?v=2026-07-12-clean-word-buttons"></script>
+  <script defer src="./browser.js?v=2026-07-12-clean-word-buttons"></script>
+</body>
+</html>
